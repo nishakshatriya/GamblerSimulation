@@ -1,16 +1,39 @@
 #!/bin/bash/ -x
 
+#CONSTANT
 STAKE=100
 BETS=1
-WIN=1
-LOSS=0
+
+
+#VARIABLE
+Cash=$STAKE
+percent=$(($STAKE*50/100))
+
+
+winLimit=$(( $Cash+$percent ))
+lossLimit=$(( $Cash-$percent ))
 
 echo "Welcome to Gambler Simulation"
 
+function gamble()
+{
+
 Outcome=$((RANDOM%2))
-if [ $Outcome -eq $WIN ]
+if [ $Outcome -eq 1 ]
 then
-	echo " User Win"
+	Cash=$(($Cash+1))
 else
-	echo " User Loss"
+	Cash=$(($Cash-1))
 fi
+
+}
+
+function resign()
+{
+gamble
+while [[ $Cash -lt $winLimit ]] && [[ $Cash -lt $lossLimit ]]
+do
+	echo $Cash
+done
+}
+ resign
