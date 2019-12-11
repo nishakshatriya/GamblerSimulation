@@ -1,7 +1,7 @@
 #!/bin/bash/ -x
 
 STAKE=100
-bets=0
+BET=1
 
 echo "Welcome to Gambler Simulation"
 
