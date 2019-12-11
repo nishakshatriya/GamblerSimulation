@@ -57,22 +57,11 @@ function gamble()
 }
 gamble
 
-function Luckiest()
+function luckiest()
 {
 	for((day=0; day<20; day++))
 	do
 		echo "Day$day" ${totalArr[$day]}
-	done | sort -k2 -nr | awk 'NR==1 {print($1 " "$2)}'
+	done | sort -k2 -nr | awk 'NR==1 {print($1 "Luckiest Day " $2)} AND awk NR==20 {print($1 "UnLuckiest" $2)}'
 }
-Luckiest
-
-
-function UnLuckiest()
-{
-	for((day=0; day<20; day++))
-	do
-        echo "Day$day" ${totalArr[$day]}
-	done | sort -k2 -n | awk 'NR==1 {print($1 " "$2)}'
-}
-UnLuckiest
-
+luckiest
