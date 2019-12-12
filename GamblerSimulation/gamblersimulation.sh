@@ -1,61 +1,60 @@
 #!/bin/bash/ -x
 
+echo "Welcome to Gambler Simulation"
+
 #CONSTANT
 STAKE=100
 BETS=1
 
-
 #VARIABLE
 win=0
 loss=0
-percent=$(( $STAKE*50/100 ))
-Cash=$STAKE
+cash=$STAKE
 
 declare -A diffDict
 declare -A totalDict
 
-winLimit=$(( $Cash+$percent ))
-lossLimit=$(( $Cash-$percent ))
+percent=$(( $STAKE*50/100 ))
+winLimit=$(( $cash+$percent ))
+lossLimit=$(( $cash-$percent ))
 
-echo "Welcome to Gambler Simulation"
-	function gamble()
-	{
 
-		for((day=0; day<20; day++))
-		do
-			Cash=$STAKE
+function gamble()
+{
 
-			while [[ $Cash -lt $winLimit ]] && [[ $Cash -gt $lossLimit ]]
-				do
-					Outcome=$((RANDOM%2))
-					if [ $Outcome -eq 1 ]
-					then
-						Cash=$(($Cash+1))
-						win=$(($win+1))
-					else
-						Cash=$(($Cash-1))
-						loss=$(($loss-1))
-					fi
-					done
+	for((day=0; day<20; day++))
+	do
+		cash=$STAKE
+		while [[ $cash -lt $winLimit ]] && [[ $cash -gt $lossLimit ]]
+			do
+				Outcome=$((RANDOM%2))
+				if [ $Outcome -eq 1 ]
+				then
+					cash=$(($cash+1))
+					win=$(($win+1))
+				else
+					cash=$(($cash-1))
+					loss=$(($loss-1))
+				fi
+			done
 
-		amount=$(( $Cash-$STAKE ))
-		echo $amount
+		amount=$(( $cash-$STAKE ))
 		totalAmount=$(($totalAmount+$amount))
 		totalDict[$day]=$totalAmount
-		diffDict[$day]=$amount" "$totalAmount
+		diffDict[$day]=" "$totalAmount
 
 	done
 
 	echo "total amount:" $totalAmount
 
-for((day=0; day<20; day++))
-do
-	echo  "Day$day" ${diffDict[$day]}
-done
+	for((day=0; day<20; day++))
+	do
+		echo  "Day$day" ${diffDict[$day]}
+	done
 
 }
 
-function luckiest()
+function luckiestUnluckiest()
 {
 	for((day=0; day<20; day++))
 	do
@@ -79,7 +78,7 @@ fi
 function main()
 {
 	gamble
-	luckiest
+	luckiestUnluckiest
 	nextPlay
 }
 main
