@@ -1,6 +1,6 @@
 #!/bin/bash/ -x
 
-echo "Welcome to Gambler Simulation"
+echo "Welcome to Gambler Simulation.."
 
 #CONSTANT
 STAKE=100
