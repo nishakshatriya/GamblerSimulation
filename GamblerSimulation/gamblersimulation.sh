@@ -4,44 +4,36 @@ echo "Welcome to Gambler Simulation.."
 
 #CONSTANT
 STAKE=100
-BETS=1
-
-#VARIABLE
-win=0
-loss=0
-cash=$STAKE
-
-declare -A diffDict
-declare -A totalDict
-
-percent=$(( $STAKE*50/100 ))
-winLimit=$(( $cash+$percent ))
-lossLimit=$(( $cash-$percent ))
+BET=1
+PERCENT=$(( $STAKE*50/100 ))
+WIN_LIMIT=$(( $STAKE+$PERCENT ))
+LOSS_LIMIT=$(( $STAKE-$PERCENT ))
 
 
-function gamble()
+declare -A diffAmountDict
+declare -A totalAmountDict
+
+function gambling()
 {
 
 	for((day=0; day<20; day++))
 	do
 		cash=$STAKE
-		while [[ $cash -lt $winLimit ]] && [[ $cash -gt $lossLimit ]]
+		while [[ $cash -lt $WIN_LIMIT ]] && [[ $cash -gt $LOSS_LIMIT ]]
 			do
 				Outcome=$((RANDOM%2))
 				if [ $Outcome -eq 1 ]
 				then
-					cash=$(($cash+1))
-					win=$(($win+1))
+					cash=$(($cash+$BET))
 				else
-					cash=$(($cash-1))
-					loss=$(($loss-1))
+					cash=$(($cash-$BET))
 				fi
 			done
 
 		amount=$(( $cash-$STAKE ))
 		totalAmount=$(($totalAmount+$amount))
-		totalDict[$day]=$totalAmount
-		diffDict[$day]=" "$totalAmount
+		totalAmountDict[$day]=$totalAmount
+		diffAmountDict[$day]=" "$totalAmount
 
 	done
 
@@ -49,36 +41,35 @@ function gamble()
 
 	for((day=0; day<20; day++))
 	do
-		echo  "Day$day" ${diffDict[$day]}
+		echo  "Day$day" ${diffAmountDict[$day]}
 	done
 
 }
 
-function luckiestUnluckiest()
+function getLuckyUnluckyDay()
 {
 	for((day=0; day<20; day++))
 	do
-		echo "Day$day" ${totalDict[$day]}
+		echo "Day$day" ${totalAmountDict[$day]}
 	done | sort -k2 -nr | awk 'NR==1 {print($1 "Luckiest Day " $2)} AND awk NR==20 {print($1 "UnLuckiest" $2)}'
 }
 
-function nextPlay()
+function checkNextPlay()
 {
 
-profit=$totalAmount
 if [ $totalAmount -gt 0 ]
 then
-		main
+		performingOperations
 else
 	echo "Shortage of Money"
 fi
 
 }
 
-function main()
+function performingOperations()
 {
-	gamble
-	luckiestUnluckiest
-	nextPlay
+	gambling
+	getLuckyUnluckyDay
+	checkNextPlay
 }
-main
+performingOperations
